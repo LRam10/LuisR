@@ -1,0 +1,195 @@
+html{
+    font-family:'Montserrat', sans-serif;
+    padding: 0;
+    margin: 0;
+    line-height: normal;
+}
+body{
+    background-image: linear-gradient(0deg, #343a40 67.48%, #f8f9fa);
+    height: 100%;
+}
+/*center email in nav-bar*/
+nav p{
+    margin: 16px 0;
+}
+#resume{
+    position: fixed;
+    right:-32px;
+    top: 50%;
+    color:#000;
+    transform: rotate(90deg);
+    z-index: 100;
+}
+/* remove padding on the default navbar*/
+.navbar{
+    padding: 0 1rem;
+    background-image: linear-gradient(0deg, #343a40 -276.52%, #fff);
+}
+.card{
+    background-color: transparent;
+}
+.card-img-top{
+    cursor: pointer;
+    position: relative;
+}
+.tech-list{
+    position: absolute;
+    height: 250px;
+    width: 100%;
+    background-color: transparent;
+}
+.navbar-brand{
+    font-weight: bold;
+    /* transform: translateX(-200%); */
+    float:left;
+    font-size: 2rem;
+
+}
+.slidein{
+    animation-name:slidein;
+    animation-duration: 4s;
+   transition:transform 4s;
+    
+}
+nav a{
+    font-size: 2em;
+    margin: .2em;
+}
+
+#linkedin{
+    color:#0073B2;
+}
+#github{
+    color:#282627;
+}
+#desc{
+    border-bottom: 1px solid #fff;
+    padding-bottom: 0.5rem;
+}
+/*Main container Section*/
+.main-container{
+    overflow: hidden;
+    margin-top: 40px;
+}
+.lead{
+    font-size: 40px;
+    font-family:monospace;
+    text-transform: uppercase;
+
+}
+.main-container img{
+    width:auto;
+    margin-top: 3em;
+}
+
+
+#resume{
+    color: #ffffff;
+}
+.btn-lg{
+    margin-bottom: 3em;
+}
+.fa-file-download{
+    margin-left: 3px;
+}
+/*Skill section stying*/
+/* For some reason i had to add a border in order to get the margin I wanted */
+#skill-sec{
+    background-image: url('images/skill-bg.png');
+    background-size: cover;
+    border: 1px solid black;
+    background-attachment: fixed;
+}
+#inner-sec{
+    margin-top:3em;
+}
+#skill-sec .fab{
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+.fa-html5{
+    color: #E54F4F;
+}
+.fa-js-square{
+    color:#F5F511;
+}
+.fa-css3-alt{
+    color: #22A0FD;
+}
+.fa-php{
+    color:#22A0FD;
+}
+#skill-sec img{
+   width: 100px;
+   height: 70px;
+   display:block;
+   margin: auto;
+   margin-bottom: 1.4em;
+}
+svg{
+    width: 100%;
+
+}
+.progress{
+    width: 60%;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+/*Project section*/
+input{
+    margin-right: auto;
+    margin-left: auto;
+}
+table{
+    margin:3rem auto;
+}
+table th{
+    padding: 1rem 2rem;
+    color:#fff;
+    text-decoration: underline;
+}
+
+/* Default breeak points
+Need to add one for extra small screens*/
+@media (max-width: 576px) {
+
+}
+
+@media (max-width: 768px) {
+
+    nav a{
+        float: right;
+        font-size: 2em;
+        margin-top:10px;
+    }
+    nav h2{
+        float:left;
+        margin-top: 20px;
+        font-weight: bold;
+        font-size: 1.5em;
+    }
+    /*putting the ul element inline with the h2(navbar-brand) element*/
+    .navbar-nav{
+        float: left;
+        clear: both;
+    }
+}
+
+
+@media only screen and (max-width: 1010px) {
+}
+
+@media (max-width: 1270px) {
+
+  }
+/*KeyFrames and animations */
+@keyframes slidein{
+    from{
+        transform: translateX(-200%);
+    }
+    to{
+        float:translateX(0);
+    }
+}
