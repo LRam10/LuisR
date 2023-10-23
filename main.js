@@ -1,19 +1,14 @@
 //Show ecommerce techn
 document.addEventListener("DOMContentLoaded", () => {
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
+      let anchor_list = document.querySelectorAll('.nav-item')[1].children;
+      let about_anchor = anchor_list[0];
+      about_anchor.addEventListener('click', (e)=>{
+        e.preventDefault();
+        const section  = document.getElementById('about');
+        console.log(section.clientHeight,section.scrollWidth)
+        
+        window.scrollTo({
+          top:section.offsetHeight
+        })
       })
-
-  let projectList = document.querySelectorAll(".card-img-top");
-  console.log(projectList);
-  projectList.forEach((element) => {
-    element.addEventListener("mousedown", () => {
-      element.style.opacity = "-.08";
-      element.previousElementSibling.classList.remove("d-none");
-    });
-    element.addEventListener("mouseout", () => {
-      element.style.opacity = "1";
-      element.previousElementSibling.classList.add("d-none");
-    });
-  });
 });

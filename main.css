@@ -4,6 +4,7 @@ html, body{
     margin: 0;
     line-height: normal;
     width: 100%;
+    background-color: #282C34;
 }
 body{
     background-image: #fff;
@@ -15,7 +16,8 @@ h3{font-size: 45px;}
 .card-body h3 {
     color: #fff;
     font-weight: 700;
-    margin-bottom: 65px;
+    margin-bottom: 20px;
+    line-height: 1.1;
 }
 nav p{
     margin: 16px 0;
@@ -40,16 +42,29 @@ nav p{
     height: 120px;
 }
 .banner{
-    height:600px;
+    height:450px;
     background-image: url('./bg-grey.png');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: bottom;
     display: grid;
+    background-color: #fff;
 }
 .details{
     display: flex; /* or inline-flex */
     align-items: center; 
+}
+.contact-info{
+    display: flex;
+    flex-direction: column;
+    gap:1rem;
+}
+.contact-info a {
+    color:#282C34;
+    font-weight: 700;
+}
+.contact-info .btn{
+    width: 40%;
 }
 #profile{
     height: 196px;
@@ -71,6 +86,7 @@ nav p{
     background-color: #404040;
     border-radius: 10px;
     padding: 2rem;
+    height:400px ;
 }
 .card-title{color:#EF6535; margin-bottom: 25px;}
 .card-img-top{
@@ -119,6 +135,8 @@ nav a{
 .main-container{
     overflow: hidden;
     background-color: #282C34;
+    margin-bottom:15px;
+    margin-top: 15px;
 }
 .lead{
     font-size: 40px;
@@ -199,7 +217,9 @@ table th{
     color:#fff;
     text-decoration: underline;
 }
-
+.text-leading{
+    line-height: 1.8;
+}
 /* Default breeak points
 Need to add one for extra small screens*/
 @media (max-width: 576px) {
