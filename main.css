@@ -1,5 +1,5 @@
 html, body{
-    font-family:'PT Sans', sans-serif;
+    font-family: 'M PLUS Code Latin', monospace;
     padding: 0;
     margin: 0;
     line-height: normal;
@@ -10,7 +10,19 @@ body{
     background-image: #fff;
     height: 100%;
 }
-h1{font-size: 54px;}
+#about p {
+    font-family: 'PT Sans', sans-serif !important;
+    font-size: 18px;
+    color: white;
+    line-height: 2;
+    letter-spacing: 1px;
+}
+.card-title{
+    font-family: 'PT Sans', sans-serif !important;
+}
+h1{
+    font-size: 54px;
+}
 h3{font-size: 45px;}
 
 .card-body h3 {
