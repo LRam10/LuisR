@@ -1,299 +1,1162 @@
-html, body{
-    font-family: 'M PLUS Code Latin', monospace;
-    padding: 0;
-    margin: 0;
-    line-height: normal;
-    width: 100%;
-    background-color: #282C34;
-}
-body{
-    background-image: #fff;
-    height: 100%;
-}
-#about p {
-    font-family: 'PT Sans', sans-serif !important;
-    font-size: 18px;
-    color: white;
-    line-height: 2;
-    letter-spacing: 1px;
-}
-.card-title{
-    font-family: 'PT Sans', sans-serif !important;
-}
-h1{
-    font-size: 54px;
-}
-h3{font-size: 45px;}
+/* ==========================================================================
+   Luis Ramirez — portfolio
+   Aesthetic: "holo-chrome trading card". Deep aubergine void, nebula bloom,
+   chrome-bevelled cards with a holographic sheen. Hand-rolled Grid + Flexbox;
+   no Bootstrap, no jQuery.
+   ========================================================================== */
 
-.card-body h3 {
-    color: #fff;
-    font-weight: 700;
-    margin-bottom: 20px;
-    line-height: 1.1;
+/* --------------------------------------------------------------------------
+   1. Fonts (self-hosted, already in the repo)
+   -------------------------------------------------------------------------- */
+
+@font-face {
+    font-family: 'Alpha Lyrae';
+    src: url('fonts/AlphaLyrae.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
 }
-nav p{
-    margin: 16px 0;
+
+@font-face {
+    font-family: 'Roboto Mono Local';
+    src: url('fonts/RobotoMono.ttf') format('truetype');
+    font-weight: 100 700;
+    font-style: normal;
+    font-display: swap;
 }
-.btn-charcoal{
-    background-color: #282C34; 
-    border-color:#B4B3B3;
-    color:#B4B3B3;
+
+/* --------------------------------------------------------------------------
+   2. Design tokens
+   -------------------------------------------------------------------------- */
+
+:root {
+    /* type */
+    --font-display: 'Alpha Lyrae', 'Trebuchet MS', sans-serif;
+    --font-mono: 'Roboto Mono Local', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+    /* violet ground — darkest layer */
+    --void: #140B24;
+    --void-deep: #0C0618;
+    --void-lift: #1E1236;
+
+    /* ink */
+    --text: #F4EEFB;
+    --text-dim: #C9BADF;
+    --text-faint: #9A8AB6;
+    --lavender: #E0AFFF;
+
+    /* chrome */
+    --chrome: linear-gradient(148deg,
+            #FFFDFF 0%,
+            #A99BC9 16%,
+            #F3ECFC 30%,
+            #6C5D90 46%,
+            #E4DAF6 60%,
+            #8B7AB2 76%,
+            #FDFAFF 92%,
+            #B7ABD4 100%);
+    /* chrome for TEXT: same banding, floor raised so it stays legible when
+       the gradient's dark stops land on the dark part of a card */
+    --chrome-text: linear-gradient(152deg,
+            #FFFFFF 0%,
+            #D3C8EC 16%,
+            #FFFFFF 32%,
+            #A294C6 48%,
+            #F8F3FF 64%,
+            #B7A9D8 80%,
+            #FFFFFF 100%);
+    --chrome-dim: linear-gradient(148deg,
+            #CFC6E4 0%,
+            #6E6190 20%,
+            #D8CFEC 40%,
+            #514570 60%,
+            #C4B9DE 80%,
+            #7A6C9C 100%);
+
+    /* geometry */
+    --bevel: 20px;
+    --shell: min(1180px, 100% - 3rem);
+    --nav-h: 72px;
+
+    /* motion */
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-soft: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    /* per-card hue (overridden inline per project) */
+    --hue: 282;
+
+    color-scheme: dark;
 }
-.btn-charcoal:hover{
-    background-color: #f8f9fa;
-    color:#282C34;
+
+/* --------------------------------------------------------------------------
+   3. Reset + base
+   -------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
-.menu a {
-    font-size: 18px;
-    color: #fff;
+
+html {
+    /* `clip` (not `hidden`) — hidden would create a scroll container and
+       break the sticky topbar. */
+    overflow-x: clip;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
 }
-/* remove padding on the default navbar*/
-.navbar{
-    padding: 0 1rem;
-    background-color: #282C34;
-    height: 120px;
+
+body {
+    margin: 0;
+    min-height: 100%;
+    overflow-x: clip;
+    background-color: var(--void);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: clamp(0.9rem, 0.85rem + 0.25vw, 1rem);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
 }
-.banner{
-    height:450px;
-    background-image: url('./bg-grey.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: bottom;
-    display: grid;
-    background-color: #fff;
+
+img,
+svg {
+    max-width: 100%;
+    display: block;
 }
-.details{
-    display: flex; /* or inline-flex */
-    align-items: center; 
+
+a {
+    color: inherit;
+    text-decoration: none;
 }
-.contact-info{
+
+h1,
+h2,
+h3,
+p,
+dl,
+dd,
+figure {
+    margin: 0;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+hr {
+    border: 0;
+    margin: 0;
+}
+
+:focus-visible {
+    outline: 2px solid var(--lavender);
+    outline-offset: 3px;
+    border-radius: 2px;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+
+.skip-link {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    translate: -50% -120%;
+    z-index: 100;
+    padding: 0.6rem 1.2rem;
+    background: var(--void-lift);
+    border: 1px solid var(--lavender);
+    color: var(--lavender);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: translate 0.2s var(--ease-out);
+}
+
+.skip-link:focus-visible {
+    translate: -50% 0.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   4. Atmosphere — nebula bloom, grid lines, film grain
+   -------------------------------------------------------------------------- */
+
+.atmosphere {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    background:
+        radial-gradient(120% 90% at 50% -20%, #2A1348 0%, transparent 62%),
+        radial-gradient(80% 60% at 100% 110%, #1D0F36 0%, transparent 70%),
+        var(--void);
+}
+
+.atmosphere__bloom {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.5;
+}
+
+.atmosphere__bloom--one {
+    inset-block-start: -14vh;
+    inset-inline-start: -8vw;
+    width: min(52vw, 620px);
+    aspect-ratio: 1;
+    background: radial-gradient(circle, #7B2FBE 0%, transparent 68%);
+}
+
+.atmosphere__bloom--two {
+    inset-block-end: -18vh;
+    inset-inline-end: -12vw;
+    width: min(58vw, 700px);
+    aspect-ratio: 1;
+    background: radial-gradient(circle, #B234C6 0%, transparent 66%);
+    opacity: 0.32;
+}
+
+.atmosphere__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        repeating-linear-gradient(90deg, rgba(224, 175, 255, 0.055) 0 1px, transparent 1px 88px),
+        repeating-linear-gradient(0deg, rgba(224, 175, 255, 0.04) 0 1px, transparent 1px 88px);
+    -webkit-mask-image: radial-gradient(90% 70% at 50% 30%, #000 0%, transparent 78%);
+    mask-image: radial-gradient(90% 70% at 50% 30%, #000 0%, transparent 78%);
+}
+
+.atmosphere__grain {
+    position: absolute;
+    inset: -50%;
+    opacity: 0.13;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* --------------------------------------------------------------------------
+   5. Topbar
+   -------------------------------------------------------------------------- */
+
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--void-deep) 78%, transparent);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    backdrop-filter: blur(14px) saturate(140%);
+    border-bottom: 1px solid rgba(224, 175, 255, 0.12);
+    transition: border-color 0.3s var(--ease-soft), background-color 0.3s var(--ease-soft);
+}
+
+.topbar::after {
+    content: '';
+    position: absolute;
+    inset-block-end: -1px;
+    inset-inline: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(224, 175, 255, 0.5), transparent);
+    opacity: 0;
+    transition: opacity 0.35s var(--ease-soft);
+}
+
+.topbar.is-scrolled {
+    --nav-h: 56px;
+    background: color-mix(in srgb, var(--void-deep) 92%, transparent);
+}
+
+.topbar.is-scrolled::after {
+    opacity: 1;
+}
+
+.topbar__nav {
+    width: var(--shell);
+    margin-inline: auto;
+    height: var(--nav-h);
     display: flex;
-    flex-direction: column;
-    gap:1rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    transition: height 0.3s var(--ease-soft);
 }
-.contact-info a {
-    color:#282C34;
-    font-weight: 700;
-}
-.contact-info .btn{
-    width: 40%;
-}
-#profile{
-    height: 196px;
-    width: 196px;
-    background-color:#282C34 ;
-    color:#34B8E0;
-    border:#34B8E0 2px solid;
-    border-radius: 200px;
-    display: flex; /* or inline-flex */
-    align-items: center; 
-    justify-content: center;
-    font-size: 6rem;
-}
-/* Technology/skills section */
-.banner {
+
+.topbar__social,
+.topbar__menu {
+    display: flex;
     align-items: center;
 }
-.card{
-    background-color: #404040;
-    border-radius: 10px;
-    padding: 2rem;
-    height:400px ;
+
+.topbar__social {
+    gap: 0.65rem;
 }
-.card-title{color:#EF6535; margin-bottom: 25px;}
-.card-img-top{
-    cursor: pointer;
+
+.topbar__social a {
+    display: grid;
+    place-items: center;
+    font-size: clamp(1.35rem, 1.1rem + 1vw, 1.7rem);
+    color: var(--text-dim);
+    line-height: 1;
+    transition: color 0.25s var(--ease-soft), transform 0.25s var(--ease-out);
+}
+
+.topbar__social a:hover {
+    color: var(--lavender);
+    transform: translateY(-2px);
+}
+
+.topbar__menu {
+    gap: clamp(1.1rem, 3vw, 2.25rem);
+}
+
+.topbar__menu a {
     position: relative;
-}
-.tech-list{
-    position: absolute;
-    height: 250px;
-    width: 100%;
-    background-color: transparent;
-}
-.svg-icons{
-    height: 3.5rem;
-    width: 3.5rem;
-}
-.tools .fab{
-    font-size: 3.5rem;
-}
-.navbar-brand{
-    font-weight: bold;
-    /* transform: translateX(-200%); */
-    float:right;
-    font-size: 2rem;
-
-}
-.slidein{
-    animation-name:slidein;
-    animation-duration: 2s;
-   transition:transform 4s;
-    
-}
-nav a{
-    font-size: 2em;
-    margin: .2em;
-}
-
-#linkedin,#github {
-    color:#F4F4F4;
-    font-size: 40px;
-}
-#desc{
-    padding-bottom: 0.5rem;
-}
-/*Main container Section*/
-.main-container{
-    overflow: hidden;
-    background-color: #282C34;
-    margin-bottom:15px;
-    margin-top: 15px;
-}
-.lead{
-    font-size: 40px;
-    font-family:monospace;
+    font-family: var(--font-display);
+    font-size: clamp(0.72rem, 0.62rem + 0.4vw, 0.9rem);
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-
-}
-.main-container img{
-    width:auto;
-    margin-top: 3em;
+    color: var(--text-dim);
+    padding-block: 0.4rem;
+    transition: color 0.25s var(--ease-soft);
 }
 
-
-#resume{
-    color: #ffffff;
-}
-.btn-lg{
-    margin-bottom: 3em;
-}
-.fa-file-download{
-    margin-left: 10px;
-}
-/*Skill section stying*/
-/* For some reason i had to add a border in order to get the margin I wanted */
-#skill-sec{
-    background-image: url('images/skill-bg.png');
-    background-size: cover;
-    border: 1px solid black;
-    background-attachment: fixed;
-}
-#inner-sec{
-    margin-top:3em;
-}
-#skill-sec .fab{
-    display: inline-block;
+.topbar__menu a::after {
+    content: '';
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline-start: 0;
     width: 100%;
+    height: 1px;
+    background: var(--lavender);
+    scale: 0 1;
+    transform-origin: left;
+    transition: scale 0.3s var(--ease-out);
+}
+
+.topbar__menu a:hover {
+    color: var(--text);
+}
+
+.topbar__menu a:hover::after {
+    scale: 1 1;
+}
+
+/* --------------------------------------------------------------------------
+   6. Page shell + sections
+   -------------------------------------------------------------------------- */
+
+main {
+    position: relative;
+    z-index: 1;
+}
+
+.hero,
+.section {
+    width: var(--shell);
+    margin-inline: auto;
+}
+
+.hero {
+    padding-block: clamp(2.5rem, 6vw, 5rem) clamp(3rem, 7vw, 6rem);
+}
+
+.section {
+    padding-block: clamp(2.5rem, 6vw, 4.5rem);
+    scroll-margin-top: calc(var(--nav-h) + 1.5rem);
+}
+
+.section__title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 1.1rem + 2.2vw, 2.6rem);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--lavender);
+    margin-block-end: clamp(1.5rem, 4vw, 2.75rem);
+}
+
+.section__title::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(224, 175, 255, 0.55), rgba(224, 175, 255, 0.02));
+}
+
+.prose {
+    max-width: 62ch;
+    font-size: clamp(1rem, 0.95rem + 0.35vw, 1.15rem);
+    line-height: 1.9;
+    letter-spacing: 0.01em;
+    color: var(--text);
+}
+
+/* About is a centred, full-width block: the heading sits between two mirrored
+   rules and the paragraph runs the full shell width. */
+.section--about {
     text-align: center;
 }
-.fa-html5{
-    color: #E54F4F;
-}
-.fa-js-square{
-    color:#F5F511;
-}
-.fa-css3-alt{
-    color: #22A0FD;
-}
-.fa-php{
-    color:#22A0FD;
-}
-#skill-sec img{
-   width: 100px;
-   height: 70px;
-   display:block;
-   margin: auto;
-   margin-bottom: 1.4em;
-}
-svg{
-    width: 100%;
 
-}
-.progress{
-    width: 60%;
-    margin-top: 10px;
-    margin-left: auto;
-    margin-right: auto;
-}
-/*Project section*/
-input{
-    margin-right: auto;
-    margin-left: auto;
-}
-table{
-    margin:3rem auto;
-}
-table th{
-    padding: 1rem 2rem;
-    color:#fff;
-    text-decoration: underline;
-}
-.text-leading{
-    line-height: 1.8;
-}
-/* Default breeak points
-Need to add one for extra small screens*/
-@media (max-width: 576px) {
-
+.section--about .section__title {
+    justify-content: center;
 }
 
-@media (max-width: 768px) {
-
-    nav a{
-        float: right;
-        font-size: 2em;
-        margin-top:10px;
-    }
-    nav h2{
-        float:left;
-        margin-top: 20px;
-        font-weight: bold;
-        font-size: 1.5em;
-    }
-    /*putting the ul element inline with the h2(navbar-brand) element*/
-    .navbar-nav{
-        float: left;
-        clear: both;
-    }
-    #profile{
-        height: 120px;
-        width: 120px;
-        font-size: 2rem;
-        border-radius: 200px;
-    }
-    h1{font-size: 35px;}
-    h3{font-size: 30px;}
-    .info{
-        margin-bottom: 5rem;
-    }
-    .svg-icons{
-        height: 2.5rem;
-        width: 2.5rem;
-        text-align: center;
-    }
-    .tools .fab{
-        font-size: 2.5rem;
-        text-align: center;
-    }
-    .col-lg-6{
-        display: block;
-    } 
+.section--about .section__title::before {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(270deg, rgba(224, 175, 255, 0.55), rgba(224, 175, 255, 0.02));
 }
 
-
-@media only screen and (max-width: 1010px) {
+.section--about .prose {
+    max-width: none;
+    margin-inline: auto;
 }
 
-@media (max-width: 1270px) {
+.footer {
+    position: relative;
+    z-index: 1;
+    padding-block: 2.5rem 3rem;
+    text-align: center;
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    border-top: 1px solid rgba(224, 175, 255, 0.1);
+    margin-top: 2rem;
+}
 
-  }
-/*KeyFrames and animations */
-@keyframes slidein{
-    from{
-        transform: translateX(200%);
+/* --------------------------------------------------------------------------
+   7. The card
+   -------------------------------------------------------------------------- */
+
+.card {
+    position: relative;
+    isolation: isolate;
+}
+
+/* Unclipped glow behind the bevelled frame, so it survives the clip-path. */
+.card::before {
+    content: '';
+    position: absolute;
+    inset: 10% 6%;
+    z-index: -1;
+    border-radius: 40%;
+    background: radial-gradient(circle at 50% 40%, hsl(var(--hue) 85% 55%) 0%, transparent 70%);
+    filter: blur(38px);
+    opacity: 0.34;
+    transition: opacity 0.45s var(--ease-soft), scale 0.45s var(--ease-soft);
+}
+
+.card__frame {
+    position: relative;
+    height: 100%;
+    padding: 2px;
+    background: var(--chrome);
+    clip-path: polygon(var(--bevel) 0,
+            calc(100% - var(--bevel)) 0,
+            100% var(--bevel),
+            100% calc(100% - var(--bevel)),
+            calc(100% - var(--bevel)) 100%,
+            var(--bevel) 100%,
+            0 calc(100% - var(--bevel)),
+            0 var(--bevel));
+    transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transform-style: preserve-3d;
+    transition: transform 0.5s var(--ease-out);
+    will-change: transform;
+}
+
+.card__face {
+    --bevel: 18px;
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(1.1rem, 3vw, 1.6rem);
+    clip-path: polygon(var(--bevel) 0,
+            calc(100% - var(--bevel)) 0,
+            100% var(--bevel),
+            100% calc(100% - var(--bevel)),
+            calc(100% - var(--bevel)) 100%,
+            var(--bevel) 100%,
+            0 calc(100% - var(--bevel)),
+            0 var(--bevel));
+    /* Top band deliberately kept at ~L40 so small lavender type on it still
+       clears WCAG AA (measured 5.9:1 for --card-accent, 4.6:1 for --text-dim). */
+    background:
+        radial-gradient(115% 70% at 50% -4%, hsl(var(--hue) 72% 40% / 0.8) 0%, hsl(var(--hue) 60% 26% / 0.55) 42%, transparent 72%),
+        radial-gradient(90% 55% at 50% 104%, hsl(var(--hue) 66% 34% / 0.32) 0%, transparent 66%),
+        linear-gradient(178deg, hsl(var(--hue) 52% 24%) 0%, #1D1033 46%, #150C27 100%);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+/* holographic sheen, driven by pointer position (see main.js) */
+.card__sheen {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    mix-blend-mode: soft-light;
+    background:
+        radial-gradient(28% 34% at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.85) 0%, transparent 70%),
+        linear-gradient(105deg,
+            transparent 32%,
+            rgba(255, 234, 255, 0.55) 45%,
+            rgba(178, 210, 255, 0.5) 50%,
+            rgba(255, 200, 245, 0.45) 55%,
+            transparent 68%);
+    background-size: 100% 100%, 260% 260%;
+    background-position: 0 0, var(--sheen-x, 50%) 50%;
+    transition: opacity 0.4s var(--ease-soft);
+}
+
+/* — position block (code only; no rating, ever) — */
+.card__pos {
+    position: absolute;
+    inset-block-start: clamp(0.6rem, 2vw, 1rem);
+    inset-inline-start: clamp(0.75rem, 2.4vw, 1.25rem);
+    z-index: 3;
+    line-height: 0.85;
+}
+
+.card__code {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 1.3rem + 2.4vw, 2.9rem);
+    letter-spacing: 0.02em;
+    background: var(--chrome-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.55));
+}
+
+.card__pos::after {
+    content: '';
+    display: block;
+    width: 2.2rem;
+    height: 2px;
+    margin-block-start: 0.45rem;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.75), transparent);
+}
+
+/* — procedural art region — */
+.card__art {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1 / 0.7;
+    margin-block-end: clamp(0.9rem, 2.5vw, 1.25rem);
+    overflow: hidden;
+}
+
+/* Backlit core: a dark centre under a bright halo, so the chrome monogram and
+   the tech glyph keep their edges instead of dissolving into the glow. */
+.card__art::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+        radial-gradient(32% 38% at 50% 52%, rgba(9, 4, 19, 0.62) 0%, rgba(9, 4, 19, 0.25) 55%, transparent 78%),
+        radial-gradient(48% 46% at 50% 52%, hsl(var(--hue) 100% 68% / 0.5) 0%, hsl(var(--hue) 92% 50% / 0.2) 38%, transparent 72%);
+}
+
+.card__art-rings {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+        repeating-radial-gradient(circle at 50% 52%,
+            transparent 0 15px,
+            hsl(var(--hue) 100% 88% / 0.09) 15px 16px);
+    -webkit-mask-image: radial-gradient(circle at 50% 52%, #000 12%, transparent 66%);
+    mask-image: radial-gradient(circle at 50% 52%, #000 12%, transparent 66%);
+}
+
+.card__glyph {
+    grid-area: 1 / 1;
+    /* glyphs are grid items (static); the glow layers are absolutely
+       positioned, so the glyphs need a stacking bump to sit above them */
+    position: relative;
+    z-index: 1;
+    font-size: clamp(4rem, 2rem + 8vw, 6rem);
+    line-height: 1;
+    color: hsl(var(--hue) 100% 92%);
+    text-shadow:
+        0 0 18px hsl(var(--hue) 100% 70% / 0.85),
+        0 0 46px hsl(var(--hue) 100% 60% / 0.55),
+        0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+.card__glyph--ghost {
+    font-size: clamp(8rem, 5rem + 14vw, 12rem);
+    color: hsl(var(--hue) 100% 88% / 0.07);
+    text-shadow: none;
+    filter: blur(1px);
+}
+
+.card__monogram {
+    grid-area: 1 / 1;
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 2rem + 9vw, 8rem);
+    letter-spacing: 0.06em;
+    line-height: 1;
+    background: var(--chrome-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 30px hsl(var(--hue) 100% 72% / 0.75)) drop-shadow(0 6px 14px rgba(0, 0, 0, 0.55));
+}
+
+/* — chrome divider band — */
+.band {
+    position: relative;
+    height: 2px;
+    background: var(--chrome-dim);
+    opacity: 0.85;
+    margin-block: clamp(0.7rem, 2vw, 1rem);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+
+/* — text block — */
+.card__eyebrow {
+    font-family: var(--font-display);
+    font-size: 0.68rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: hsl(var(--hue) 100% 90%);
+}
+
+.card__name {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.35rem, 1rem + 1.5vw, 1.8rem);
+    line-height: 1.1;
+    letter-spacing: 0.01em;
+    color: #FFF;
+    margin-block-start: 0.35rem;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+}
+
+/* — tech rows (two-up, like the reference's stat columns) — */
+.card__tech {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.4rem 0.9rem;
+    margin-block-end: auto;
+    padding-block-end: 1.25rem;
+}
+
+.card__tech li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.45rem;
+    font-size: 0.76rem;
+    letter-spacing: 0.05em;
+    color: var(--text);
+    min-width: 0;
+}
+
+.card__tech li::before {
+    content: '';
+    flex: none;
+    width: 5px;
+    height: 5px;
+    rotate: 45deg;
+    background: hsl(var(--hue) 100% 78%);
+    box-shadow: 0 0 8px hsl(var(--hue) 100% 70%);
+}
+
+/* — action row — */
+.card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    padding-block-start: clamp(0.75rem, 2vw, 1rem);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex: 1 1 auto;
+    /* no `min-width: 0` — chips must never shrink below their label and clip
+       the icon; they wrap to the next row instead */
+    padding: 0.62rem 0.95rem;
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.26);
+    transition: background-color 0.25s var(--ease-soft), color 0.25s var(--ease-soft),
+        border-color 0.25s var(--ease-soft), transform 0.25s var(--ease-out),
+        box-shadow 0.25s var(--ease-soft);
+}
+
+.chip i {
+    font-size: 0.9em;
+}
+
+.chip:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-2px);
+}
+
+.chip--solid {
+    background: linear-gradient(180deg, #F6EEFF 0%, #D9C6F2 100%);
+    border-color: transparent;
+    color: #1A0E2E;
+    box-shadow: 0 6px 18px hsl(var(--hue) 80% 40% / 0.45);
+}
+
+.chip--solid:hover {
+    background: linear-gradient(180deg, #FFF 0%, #EBDDFF 100%);
+    color: #12081F;
+    box-shadow: 0 10px 26px hsl(var(--hue) 85% 50% / 0.55);
+}
+
+/* --------------------------------------------------------------------------
+   8. Hero card
+   -------------------------------------------------------------------------- */
+
+.card--hero {
+    --bevel: 26px;
+    max-width: 66rem;
+    margin-inline: auto;
+}
+
+.card--hero .card__frame {
+    padding: 3px;
+}
+
+.card--hero .card__face {
+    --bevel: 23px;
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+}
+
+.card--hero .card__pos {
+    inset-block-start: clamp(0.9rem, 2.5vw, 1.5rem);
+    inset-inline-start: clamp(1rem, 3vw, 1.75rem);
+}
+
+.card--hero .card__code {
+    font-size: clamp(2.2rem, 1.4rem + 3vw, 3.4rem);
+}
+
+.card__hero-grid {
+    display: grid;
+    gap: clamp(1.25rem, 3.5vw, 2.75rem);
+    align-items: start;
+}
+
+.card__art--hero {
+    aspect-ratio: 1 / 0.62;
+}
+
+.card__eyebrow + .card__name,
+.card--hero .card__name {
+    margin-block-start: 0.4rem;
+}
+
+.card--hero .card__name {
+    display: flex;
+    flex-direction: column;
+    font-size: clamp(2.1rem, 1.2rem + 4.5vw, 3.9rem);
+    letter-spacing: 0.02em;
+    line-height: 0.98;
+    text-transform: uppercase;
+}
+
+.card--hero .card__name span {
+    color: var(--lavender);
+}
+
+/* stat lines — text rows, no bars, no scores */
+.statlines {
+    display: grid;
+    gap: clamp(0.8rem, 2vw, 1.15rem);
+}
+
+.statline dt {
+    font-family: var(--font-display);
+    font-size: 0.68rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: hsl(var(--hue) 100% 90%);
+    margin-block-end: 0.3rem;
+}
+
+.statline dd {
+    margin: 0;
+    font-size: clamp(0.82rem, 0.75rem + 0.3vw, 0.95rem);
+    line-height: 1.75;
+    letter-spacing: 0.02em;
+    color: var(--text);
+}
+
+.statline dd i {
+    font-style: normal;
+    color: var(--text-faint);
+    padding-inline: 0.1rem;
+}
+
+.contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem clamp(1rem, 3vw, 2rem);
+}
+
+.contact__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    color: var(--text-dim);
+    word-break: break-word;
+    transition: color 0.25s var(--ease-soft);
+}
+
+.contact__link i {
+    color: hsl(var(--hue) 100% 80%);
+    font-size: 0.85em;
+}
+
+.contact__link:hover {
+    color: var(--text);
+}
+
+.card__actions--hero {
+    margin-block-start: clamp(1rem, 3vw, 1.5rem);
+}
+
+.card__actions--hero .chip {
+    flex: 0 1 auto;
+}
+
+.band--mobile-only {
+    display: block;
+}
+
+/* --------------------------------------------------------------------------
+   9. Project deck — desktop 2x2 grid
+   -------------------------------------------------------------------------- */
+
+.deck {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 22.5rem));
+    justify-content: center;
+    gap: clamp(1.5rem, 4vw, 2.75rem);
+}
+
+.deck-dots {
+    display: none;
+}
+
+/* --------------------------------------------------------------------------
+   10. Motion — reveal, tilt, sheen
+   -------------------------------------------------------------------------- */
+
+@keyframes rise {
+    from {
+        opacity: 0;
+        transform: translateY(26px);
     }
-    to{
-        float:translateX(0);
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.card,
+.section__title,
+.prose {
+    animation: rise 0.75s var(--ease-out) both;
+}
+
+.hero .card {
+    animation-delay: 0.05s;
+}
+
+.section--about .section__title {
+    animation-delay: 0.12s;
+}
+
+.section--about .prose {
+    animation-delay: 0.2s;
+}
+
+.deck .card:nth-child(1) {
+    animation-delay: 0.06s;
+}
+
+.deck .card:nth-child(2) {
+    animation-delay: 0.14s;
+}
+
+.deck .card:nth-child(3) {
+    animation-delay: 0.22s;
+}
+
+.deck .card:nth-child(4) {
+    animation-delay: 0.3s;
+}
+
+/* Pointer-only: tilt, sheen sweep and glow lift. Phones get a plain tap. */
+@media (hover: hover) and (pointer: fine) {
+    .card__frame {
+        transition: transform 0.5s var(--ease-out), box-shadow 0.4s var(--ease-soft);
+    }
+
+    .card.is-tilting .card__frame {
+        transition: transform 0.12s linear;
+    }
+
+    .card:hover::before,
+    .card:focus-within::before {
+        opacity: 0.72;
+        scale: 1.06;
+    }
+
+    .card:hover .card__sheen,
+    .card:focus-within .card__sheen {
+        opacity: 0.85;
+    }
+
+    .card:hover .card__face,
+    .card:focus-within .card__face {
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16),
+            inset 0 1px 0 rgba(255, 255, 255, 0.32);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   11. Mobile — scroll-snap carousel + layout collapse
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 767px) {
+    :root {
+        --shell: min(1180px, 100% - 2rem);
+        --nav-h: 56px;
+        --bevel: 16px;
+    }
+
+    .topbar.is-scrolled {
+        --nav-h: 50px;
+    }
+
+    .card__face {
+        --bevel: 14px;
+    }
+
+    .card--hero {
+        --bevel: 20px;
+    }
+
+    .card--hero .card__face {
+        --bevel: 17px;
+    }
+
+    /* The deck becomes a horizontal, snap-scrolling carousel.
+       Card width leaves ~20vw of the next card peeking. */
+    .deck {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: min(78vw, 26rem);
+        grid-template-columns: none;
+        justify-content: start;
+        gap: 1rem;
+        overflow-x: auto;
+        overflow-y: visible;
+        scroll-snap-type: x mandatory;
+        scroll-padding-inline: 0.25rem;
+        padding: 0.5rem 0.25rem 1.25rem;
+        /* let the glow bleed past the shell without causing page overflow */
+        margin-inline: -0.75rem;
+        padding-inline: 0.75rem;
+        overscroll-behavior-x: contain;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .deck::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+        display: none;
+    }
+
+    .deck .card {
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+    }
+
+    .deck:focus-visible {
+        outline: 2px solid var(--lavender);
+        outline-offset: 4px;
+    }
+
+    /* dot indicators */
+    .deck-dots {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.55rem;
+        margin-block-start: 0.5rem;
+    }
+
+    .deck-dots button {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 2rem;
+        height: 2rem;
+        padding: 0;
+        display: grid;
+        place-items: center;
+        background: none;
+        border: 0;
+        cursor: pointer;
+    }
+
+    .deck-dots button::before {
+        content: '';
+        width: 7px;
+        height: 7px;
+        rotate: 45deg;
+        background: rgba(224, 175, 255, 0.28);
+        transition: background-color 0.3s var(--ease-soft), box-shadow 0.3s var(--ease-soft),
+            scale 0.3s var(--ease-out);
+    }
+
+    .deck-dots button[aria-current='true']::before {
+        background: var(--lavender);
+        box-shadow: 0 0 12px rgba(224, 175, 255, 0.85);
+        scale: 1.45;
+    }
+
+    /* hero collapses to one column */
+    .card--hero .card__name {
+        font-size: clamp(1.9rem, 1.1rem + 5.5vw, 2.9rem);
+    }
+
+    .card__actions--hero .chip {
+        flex: 1 1 auto;
+    }
+
+    .contact__link {
+        font-size: 0.78rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .card__hero-grid {
+        grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+        column-gap: clamp(1.75rem, 4vw, 3.25rem);
+        align-items: stretch;
+    }
+
+    .card__hero-left {
+        padding-block-start: clamp(1.5rem, 4vw, 2.5rem);
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* push the name plate to the bottom edge so both columns bracket the card */
+    .card__hero-left .card__art {
+        margin-block-end: auto;
+    }
+
+    .card__hero-right {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .band--mobile-only {
+        display: none;
+    }
+}
+
+/* very small phones */
+@media (max-width: 359px) {
+    :root {
+        --shell: min(1180px, 100% - 1.5rem);
+    }
+
+    .card__tech {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .card__actions {
+        flex-direction: column;
+    }
+
+    .chip {
+        letter-spacing: 0.12em;
+    }
+}
+
+/* wide screens get a little more air */
+@media (min-width: 1280px) {
+    .deck {
+        grid-template-columns: repeat(2, minmax(0, 24rem));
+    }
+}
+
+/* --------------------------------------------------------------------------
+   12. Reduced motion
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .card__frame {
+        transform: none !important;
+    }
+
+    .card__sheen {
+        display: none;
     }
 }
